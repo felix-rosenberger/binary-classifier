@@ -54,6 +54,8 @@ loss.function.visualisation = function(min.alpha, # smallest learning rate
   costs = data.frame(matrix(NA, nrow = max.iter, 
                             ncol = length(alphas))) # create empty df with nrow = max.iter
   final.costs = c()
+  init.iter = max.iter
+  optimal.alpha = 0
   # for each alpha, train classifier and add costs as column to results df
   for (i in 1:length(alphas)) {
     classifier = binary.classifier.train(train, alpha = alphas[i], iter.max = max.iter)
@@ -61,11 +63,19 @@ loss.function.visualisation = function(min.alpha, # smallest learning rate
     final.costs = cbind(final.costs, classifier$final.cost)
     costs[,i] = c(cost, rep(NA, nrow(costs) - length(cost))) # append costs to results df
     names(costs)[i] = paste("alpha =", alphas[i]) # rename column to alpha level
+    iter = classifier$iterations # extract iterations for alpha
+    # update optimal learning rate based on convergence speed
+    if (iter <= init.iter){
+      optimal.alpha = alphas[i]
+      init.iter = iter
+    }
   }
   
   # plot loss functions with ggplot
   # change to long format
-  costs.long = melt(costs, variable.name = "Alpha", value.name = "Cost")
+  suppressWarnings({
+    costs.long = melt(costs, variable.name = "Alpha", value.name = "Cost")
+    })
   costs.long$Iteration = sequence(rep(nrow(costs), ncol(costs))) # add iterations for each alpha
   costs.long = costs.long[!is.na(costs.long$Cost),] # remove rows with missing values
   
@@ -88,8 +98,7 @@ loss.function.visualisation = function(min.alpha, # smallest learning rate
   y.min = min.cost - 1
   
   # create plot with loss functions over learning rate range
-  ggplot(costs.long, aes(x = Iteration, y = Cost, color = Alpha)) +
-    #geom_point() +
+  plot = ggplot(costs.long, aes(x = Iteration, y = Cost, color = Alpha)) +
     geom_line() +
     scale_color_discrete(name = "Learning Rate") +
     labs(title = "Loss Visualisation for Different Learning Rates",
@@ -99,6 +108,12 @@ loss.function.visualisation = function(min.alpha, # smallest learning rate
     coord_cartesian(xlim = c(0, x.range),
                     ylim = c(y.min, y.max)) + # set axis limit
     theme_minimal()
+  
+  # create result output
+  result = list(loss.plot = plot,
+                optimal.alpha = optimal.alpha)
+  
+  return(result)
 }
 
 # training with optimal alpha value
