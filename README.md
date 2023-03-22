@@ -6,7 +6,7 @@ This repository contains the implementation of a binary classifier using logisti
 
 There are three main files in this repository:
 
-1. [`binary_classifier.R`](https://github.com/felix-rosenberger/binary-classifier/blob/main/binary_classifier.R) : Contains the implementation of the binary classifier, including the training and prediction functions.
+1. [`binary_classifier.R`](https://github.com/felix-rosenberger/binary-classifier/blob/main/binary_classifier.R) : Contains the implementation of the binary classifier, including the training and prediction functions, and a function to visualise the loss function for different learning rates and to determine an optimal learning rate.
 2. [`binary_classifier_example.R`](https://github.com/felix-rosenberger/binary-classifier/blob/main/binary_classifier_example.R): A script that demonstrates how to use the binary classifier, and compares its performance to the built-in `glm` classifier.
 3. `BinaryClassifier.csv`: The dataset used in the example script.
 
