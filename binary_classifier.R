@@ -13,8 +13,7 @@ binary.classifier.train = function(
   col.std = attr(X,"scaled:scale") # save feature standard deviation for test data
   X = as.matrix( # convert final output of training data to matrix
     cbind( # combine bias term and training data
-      rep(1, nrow(train)), X), # create sequence of bias terms and combine with scaled data
-    ncol = ncol(train))
+      rep(1, nrow(train)), X)) # create sequence of bias terms and combine with scaled data
   y = matrix(train[, colnames(train) == "y"], ncol = 1) # create label vector
   
   # initialise parameters
@@ -65,9 +64,7 @@ binary.classifier.predict = function(test.df, # test dataframe, labels have to b
                   scale = trained.classifier$train.std[i])
   }
   X = as.matrix( # convert final output of test data to matrix
-    cbind( # combine bias term and test data
-      rep(1, nrow(test)), X), # create sequence of bias terms and combine with scaled data
-    ncol = ncol(test))
+    cbind(rep(1, nrow(test)), X)) # create sequence of bias terms and combine with scaled data
   y = matrix(test[, colnames(train) == "y"], ncol = 1)
   
   # predict output based on optimal weights
