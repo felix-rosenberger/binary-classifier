@@ -31,10 +31,11 @@ Please make sure to install these libraries before running the scripts.
 
 ## Classifier Implementation
 
-The `binary_classifier.R` file contains two main functions:
+The `binary_classifier.R` file contains three main functions:
 
 - `binary.classifier.train()`: A function for training the binary classifier on a given dataset.
 - `binary.classifier.predict()`: A function for making predictions using the trained binary classifier on a test dataset.
+- `loss.function.visualisation()`: A function to visualise the learning algorithm convergence for a range of different learning rates, given by the user. It provides the best learning rate based on convergence speed.
 
 ### Function Inputs and Outputs
 
@@ -60,6 +61,16 @@ Outputs:
 - A list including the following attributes:
   - `pred.classes`: A numeric vector containing the class predictions for the test data.
   - `conf.matrix`: A confusion matrix with all relevant metrics to evaluate the classifier performance.
+  
+#### loss.function.visualisation()
+
+Inputs:
+- A range of learning rate values in the form of `min`, `max`, `increments`.
+
+Outputs:
+- A list including the following attributes:
+  - `loss.plot`: A visualisation of the loss function convergence across learning rates.
+  - `optimal.alpha`: The optimal learning rate out of the range provided by the user.
 
 ## Example Script
 
