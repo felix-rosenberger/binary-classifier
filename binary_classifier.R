@@ -6,15 +6,17 @@ binary.classifier.train = function(
     epsilon = 0.000001, # convergence tolerance for optimisation
     iter.max = 1000) { # maximum number of iterations for optimisation
   
+  # check for correct column name of target variable
+  
   # preprocess input data
-  X = train[, colnames(train) != "y"] # select features only
+  X = train[, !colnames(train) %in% c("y", "Y", "labels", "Labels", "classes", "Classes")] # select features only
   X = scale(X) # standardise features
   col.means = attr(X,"scaled:center") # save feature means for test data standardisation
   col.std = attr(X,"scaled:scale") # save feature standard deviation for test data
   X = as.matrix( # convert final output of training data to matrix
     cbind( # combine bias term and training data
       rep(1, nrow(train)), X)) # create sequence of bias terms and combine with scaled data
-  y = matrix(train[, colnames(train) == "y"], ncol = 1) # create label vector
+  y = matrix(train[, colnames(train) %in% c("y", "Y", "labels", "Labels", "classes", "Classes")], ncol = 1) # create label vector
   
   # initialise parameters
   res.epsilon = 1 # tolerance
@@ -57,7 +59,7 @@ binary.classifier.predict = function(test.df, # test dataframe, labels have to b
                                      trained.classifier, # trained classifier object
                                      threshold = 0.5) { # set prediction threshold
   # preprocess input data
-  X = test[, colnames(test) != "y"]
+  X = test[, !colnames(test) %in% c("y", "Y", "labels", "Labels", "classes", "Classes")]
   # standardise each feature column in test data (mean and std estimates from training data)
   for (i in 1:ncol(X)) {
     X[,i] = scale(X[,i], 
@@ -66,7 +68,7 @@ binary.classifier.predict = function(test.df, # test dataframe, labels have to b
   }
   X = as.matrix( # convert final output of test data to matrix
     cbind(rep(1, nrow(test)), X)) # create sequence of bias terms and combine with scaled data
-  y = matrix(test[, colnames(train) == "y"], ncol = 1)
+  y = matrix(test[, colnames(train) %in% c("y", "Y", "labels", "Labels", "classes", "Classes")], ncol = 1)
   
   # predict output based on optimal weights
   theta = trained.classifier$final.weight
