@@ -46,7 +46,8 @@ binary.classifier.train = function(
                 tolerance = res.epsilon,
                 train.means = col.means,
                 train.std = col.std,
-                learning.rate = alpha)
+                learning.rate = alpha,
+                max.iter = iter.max) # store for loss function visualisations
   return(result)
   
 }
